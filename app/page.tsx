@@ -91,9 +91,8 @@ export default function Home() {
   return (
     <main>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="NOIR — на главную">
-          <span className="brand-mark">N</span>
-          <span>NOIR<br /><small>tattoo studio</small></span>
+        <a className="brand" href="#top" aria-label="BODY PARTS TATTOO — на главную">
+          <Image className="brand-logo" src="/body-parts-logo.png" alt="BODY PARTS TATTOO" width={168} height={99} priority />
         </a>
         <nav aria-label="Основная навигация">
           <a href="#results">Результаты</a>
@@ -101,7 +100,7 @@ export default function Home() {
           <a href="#calculator">Расчёт сеансов</a>
           <a href="#process">Процесс</a>
         </nav>
-        <a className="header-cta" href="#booking">Записаться <ArrowUpRight size={17} /></a>
+        <a className="header-cta" href="#booking">Записаться</a>
         <button className="menu-button" onClick={() => setMenuOpen(true)} aria-label="Открыть меню"><Menu /></button>
       </header>
 
@@ -116,7 +115,7 @@ export default function Home() {
       )}
 
       <a className="floating-booking" href="#booking" aria-label="Перейти к онлайн-записи">
-        <span>Запись<br />онлайн</span><ArrowUpRight />
+        <span>Запись<br /> онлайн</span><ArrowUpRight />
       </a>
 
       <section className="hero" id="top">
@@ -148,7 +147,7 @@ export default function Home() {
         </div>
         <div className="advantages-mosaic">
           <article className="advantage-feature">
-            <Image src="/studio-equipment.png" alt="Лазер и криоустановка NOIR" fill sizes="(max-width: 900px) 100vw, 34vw" />
+            <Image src="/studio-equipment.png" alt="Лазер и криоустановка BODY PARTS TATTOO" fill sizes="(max-width: 900px) 100vw, 34vw" />
             <div className="advantage-feature-shade" />
             <div className="advantage-card-content">
               <div className="advantage-icon"><Sparkles /></div>
@@ -271,8 +270,8 @@ export default function Home() {
 
       <section className="section studio-section">
         <div className="studio-story">
-          <div className="studio-copy"><h2>Давайте<br /><em>знакомиться</em></h2><p>NOIR — тёмное, спокойное пространство, где технология не заслоняет заботу. Показываем оборудование, объясняем план и остаёмся рядом между сеансами.</p><div className="studio-tags"><span>Лазер</span><span>Криоустановка</span><span>Кушетка</span><span>Зона ожидания</span></div><a className="button button-ghost" href="#booking">Познакомиться на консультации <ArrowUpRight /></a></div>
-          <div className="studio-collage"><div className="studio-main-photo"><Image src="/studio-consultation.png" alt="Консультация в студии NOIR" fill sizes="(max-width: 900px) 100vw, 52vw" /></div><div className="studio-detail-photo"><Image src="/studio-equipment.png" alt="Лазер, криоустановка и кушетка" fill sizes="28vw" /></div><i className="decor-square studio-square" /></div>
+          <div className="studio-copy"><h2>Давайте<br /><em>знакомиться</em></h2><p>BODY PARTS TATTOO — пространство с высоким стандартом качества, где технология не заслоняет заботу. Показываем оборудование, объясняем план и остаёмся рядом между сеансами.</p><div className="studio-tags"><span>Лазер</span><span>Криоустановка</span><span>Кушетка</span><span>Зона ожидания</span></div><a className="button button-ghost" href="#booking">Познакомиться на консультации <ArrowUpRight /></a></div>
+          <div className="studio-collage"><div className="studio-main-photo"><Image src="/studio-consultation.png" alt="Консультация в студии BODY PARTS TATTOO" fill sizes="(max-width: 900px) 100vw, 52vw" /></div><div className="studio-detail-photo"><Image src="/studio-equipment.png" alt="Лазер, криоустановка и кушетка" fill sizes="28vw" /></div><i className="decor-square studio-square" /></div>
         </div>
       </section>
 
@@ -302,7 +301,7 @@ export default function Home() {
         <form onSubmit={submitCoupon}><label>Ваше имя<input required name="name" placeholder="Как к вам обращаться?" /></label><label>Телефон или Telegram<input required name="contact" placeholder="+7 999 000-00-00" /></label><label>Что хотите сделать?<select name="goal"><option>Удалить тату полностью</option><option>Осветлить под перекрытие</option><option>Нужна консультация</option></select></label><button className="button button-primary" type="submit">Получить купон <ArrowUpRight /></button><small>Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</small></form>
       </section>
 
-      <footer><a className="brand" href="#top"><span className="brand-mark">N</span><span>NOIR<br /><small>tattoo studio</small></span></a><p>Лазерное удаление и осветление татуировок.</p><div><a href="#results">Результаты</a><a href="#price">Прайс</a><a href="#faq">FAQ</a><a href="#booking">Контакты</a></div><span>© 2026 NOIR</span></footer>
+      <footer><a className="brand" href="#top"><Image className="brand-logo" src="/body-parts-logo.png" alt="BODY PARTS TATTOO" width={168} height={99} /></a><p>Лазерное удаление и осветление татуировок.</p><div><a href="#results">Результаты</a><a href="#price">Прайс</a><a href="#faq">FAQ</a><a href="#booking">Контакты</a></div><span>© 2026 BODY PARTS TATTOO</span></footer>
 
       {videoOpen !== null && <div className="modal-backdrop" role="presentation" onKeyDown={event => event.key === 'Escape' && setVideoOpen(null)} onClick={event => event.currentTarget === event.target && setVideoOpen(null)}><dialog open className="video-modal" aria-label="Видеоотзыв клиента"><button onClick={() => setVideoOpen(null)} aria-label="Закрыть"><X /></button><div className="video-placeholder"><Play fill="currentColor" /><p>Видеоотзыв клиента</p><span>Сюда можно добавить реальное видео студии</span></div></dialog></div>}
       {coupon && <div className="modal-backdrop" role="presentation" onKeyDown={event => event.key === 'Escape' && setCoupon(false)} onClick={event => event.currentTarget === event.target && setCoupon(false)}><dialog open className="coupon-modal" aria-label="Купон на скидку"><button onClick={() => setCoupon(false)} aria-label="Закрыть"><X /></button><BadgePercent /><p>Ваш купон</p><strong>FIRST20</strong><h3>Скидка 20% сохранена</h3><span>Покажите код администратору. Мы свяжемся с вами для подтверждения записи.</span><button className="button button-primary" onClick={() => setCoupon(false)}>Готово</button></dialog></div>}
