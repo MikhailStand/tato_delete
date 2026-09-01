@@ -182,18 +182,21 @@ export default function Home() {
       <section className="section results-section" id="results">
         <div className="section-heading split-heading">
           <div><h2>До — и <em>после</em></h2></div>
-          <fieldset className="goal-switch"><legend className="sr-only">Цель удаления</legend>
-            <button className={goal === 'remove' ? 'active' : ''} onClick={() => setGoal('remove')}>Полное удаление</button>
-            <button className={goal === 'cover' ? 'active' : ''} onClick={() => setGoal('cover')}>Под перекрытие</button>
-          </fieldset>
+          <div className="goal-control">
+            <span>Цель удаления</span>
+            <fieldset className="goal-switch"><legend className="sr-only">Выберите цель удаления</legend>
+              <button className={goal === 'remove' ? 'active' : ''} onClick={() => setGoal('remove')}>Полное удаление</button>
+              <button className={goal === 'cover' ? 'active' : ''} onClick={() => setGoal('cover')}>Под перекрытие</button>
+            </fieldset>
+          </div>
         </div>
-        <div className={`before-after-grid ${goal === 'cover' ? 'cover-case' : ''}`}>
+        <div className="before-after-grid">
           <figure className="result-photo result-photo-before">
-            <Image src="/before-after.png" alt="Татуировка до начала курса удаления" fill sizes="(max-width: 700px) 100vw, 50vw" style={{ width: '200%', maxWidth: 'none', left: 0 }} />
+            <Image src={goal === 'remove' ? '/before-after.png' : '/before-after-cover.png'} alt="Татуировка до начала курса удаления" fill sizes="(max-width: 700px) 100vw, 50vw" style={{ width: '200%', maxWidth: 'none', left: 0 }} />
             <figcaption>До</figcaption>
           </figure>
           <figure className="result-photo result-photo-after">
-            <Image src="/before-after.png" alt={goal === 'remove' ? 'Кожа после курса удаления татуировки' : 'Татуировка после осветления под перекрытие'} fill sizes="(max-width: 700px) 100vw, 50vw" style={{ width: '200%', maxWidth: 'none', left: '-100%' }} />
+            <Image src={goal === 'remove' ? '/before-after.png' : '/before-after-cover.png'} alt={goal === 'remove' ? 'Кожа после курса удаления татуировки' : 'Татуировка после осветления под перекрытие'} fill sizes="(max-width: 700px) 100vw, 50vw" style={{ width: '200%', maxWidth: 'none', left: '-100%' }} />
             <figcaption>{goal === 'remove' ? 'После курса' : 'После осветления'}</figcaption>
           </figure>
         </div>

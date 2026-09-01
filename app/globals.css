@@ -117,22 +117,23 @@ h1 em { color:white; font-style:normal; text-shadow: 0 9px 0 rgba(100,72,164,.78
 
 /* Results */
 .results-section { background: radial-gradient(circle at 90% 40%,rgba(111,76,191,.12),transparent 36%),#09090b; }
-.goal-switch { justify-self: end; display: flex; min-width: 0; margin: 0; padding: 5px; border: 1px solid var(--line); border-radius: 99px; background: #0f0e12; }
-.goal-switch button { padding: 13px 20px; border: 0; border-radius: 99px; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; transition: all .2s ease; }
+.goal-control { justify-self: end; display: grid; gap: 12px; }
+.goal-control > span { padding-left: 8px; color: #d8d3df; font-size: 15px; font-weight: 750; letter-spacing: -.02em; }
+.goal-switch { display: flex; min-width: 0; margin: 0; padding: 6px; border: 1px solid var(--line); border-radius: 99px; background: #0f0e12; }
+.goal-switch button { min-width: 158px; padding: 17px 24px; border: 0; border-radius: 99px; background: transparent; color: #a9a4b0; cursor: pointer; font-size: 15px; font-weight: 680; transition: all .2s ease; }
 .goal-switch button.active { background: var(--violet); color: #0b0811; }
 .before-after-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 30px; background: #100e13; }
-.before-after-grid.cover-case { filter: saturate(.75) contrast(.96); }
 .result-photo { position: relative; min-height: min(38vw,540px); margin: 0; overflow: hidden; border-radius: 21px; background: #17141c; }
 .result-photo img { height: 100%; object-fit: cover; filter: saturate(.9) contrast(1.03); }
 .result-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg,rgba(6,5,8,.32),transparent 38%); pointer-events: none; }
 .result-photo figcaption { position: absolute; z-index: 2; left: 20px; bottom: 20px; padding: 10px 14px; border: 1px solid rgba(255,255,255,.24); border-radius: 99px; background: rgba(8,7,10,.78); backdrop-filter: blur(10px); font-size: 11px; text-transform: uppercase; letter-spacing: .14em; }
 .result-caption { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; padding: 28px 10px 0; }
 .result-caption p { display: grid; gap: 8px; max-width: 620px; margin: 0; }
-.result-caption p strong { font-size: 22px; }
-.result-caption p span { color: var(--muted); line-height: 1.5; }
+.result-caption p strong { font-size: 26px; letter-spacing: -.025em; }
+.result-caption p span { color: #c5c0cc; font-size: 16px; font-weight: 520; line-height: 1.55; }
 .result-caption > div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.result-caption > div span { padding: 10px 13px; border: 1px solid var(--line); border-radius: 99px; color: #aaa6b1; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
-.medical-note { margin: 34px 0 0; color: #625e68; font-size: 11px; }
+.result-caption > div span { padding: 11px 15px; border: 1px solid var(--line); border-radius: 99px; color: #c0bbc7; font-size: 11px; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; }
+.medical-note { max-width: 920px; margin: 34px 0 0; color: #918c99; font-size: 13px; line-height: 1.5; }
 
 /* Price */
 .price-section { background: #0d0c10; }
@@ -339,7 +340,7 @@ footer > div a:hover { color: white; }
   .section { padding: 66px 24px; }
   .split-heading { grid-template-columns: 1fr; align-items: start; gap: 25px; }
   .split-heading > p { margin-left: 0; }
-  .goal-switch { justify-self: start; }
+  .goal-control { justify-self: start; }
   .advantages-title h2 { font-size: clamp(74px,18vw,134px); }
   .advantages-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .advantage-feature { grid-column: 1 / -1; grid-row: auto; min-height: 560px; }
@@ -377,6 +378,9 @@ footer > div a:hover { color: white; }
   .result-photo figcaption { left: 14px; bottom: 14px; padding: 8px 11px; font-size: 9px; }
   .result-caption { flex-direction: column; }
   .result-caption > div { justify-content: flex-start; }
+  .goal-control { width: 100%; }
+  .goal-switch { width: 100%; }
+  .goal-switch button { flex: 1; min-width: 0; padding: 15px 12px; font-size: 13px; }
   .price-row { grid-template-columns: 1fr auto; gap: 10px; padding: 16px; }
   .price-row strong { font-size: 18px; }
   .subscription-card { padding: 28px; }
