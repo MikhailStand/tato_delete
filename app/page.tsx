@@ -133,18 +133,12 @@ export default function Home() {
         </div>
         <div className="hero-visual">
           <Image src="/studio-equipment.png" alt="Лазерная и криоустановка в студии" fill priority sizes="(max-width: 900px) 100vw, 54vw" />
-          <div className="hero-outline-word">REMOVAL</div>
           <div className="image-wash" />
           <div className="equipment-note note-laser"><b>Пикосекундный лазер</b><small>точно воздействует на пигмент</small></div>
           <div className="equipment-note note-cryo"><b>Криоустановка</b><small>комфорт во время процедуры</small></div>
           <div className="status-pill"><Sparkles size={16} /> Современное оборудование</div>
           <div className="orbit-copy">ТОЧНО · БЕРЕЖНО · ДО РЕЗУЛЬТАТА ·</div>
         </div>
-      </section>
-
-      <section className="trust-strip" aria-label="Преимущества">
-        <p>Удаляем лишнее.<br /><strong>Сохраняем главное — вас.</strong></p>
-        <div><span>Эффективно</span><span>Безопасно</span><span>Быстро</span></div>
       </section>
 
       <section className="section advantages">

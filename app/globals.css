@@ -58,7 +58,6 @@ h1 em { color:white; font-style:normal; text-shadow: 0 9px 0 rgba(100,72,164,.78
 .button-ghost:hover { background:rgba(255,255,255,.07); }
 .hero-visual { position:relative; min-height:760px; border-left:1px solid rgba(255,255,255,.08); }
 .hero-visual img { object-fit:cover; object-position:57% center; filter:saturate(.8) contrast(1.05); }
-.hero-outline-word { position: absolute; z-index: 1; left: -4%; top: 43%; color: transparent; -webkit-text-stroke: 1px rgba(206,190,255,.12); font-size: clamp(95px,10vw,170px); font-weight: 800; letter-spacing: -.08em; transform: rotate(-5deg); }
 .image-wash { position:absolute; inset:0; background:linear-gradient(90deg,#09090b 0%,rgba(9,9,11,.35) 22%,transparent 60%),linear-gradient(0deg,rgba(7,6,10,.8),transparent 45%); }
 .equipment-note { position:absolute; display:grid; gap:4px; width:210px; padding:15px 18px; border:1px solid rgba(198,178,255,.25); background:rgba(12,10,17,.72); backdrop-filter:blur(14px); border-radius:16px; box-shadow:0 16px 50px rgba(0,0,0,.3); }
 .equipment-note b { font-size:12px; }
@@ -71,12 +70,7 @@ h1 em { color:white; font-style:normal; text-shadow: 0 9px 0 rgba(100,72,164,.78
 .decor-square { position: absolute; display: block; width: 48px; height: 48px; background: #514276; transform: rotate(17deg); opacity: .58; }
 .hero-square-one { z-index: 4; left: 4.5%; top: 19%; }
 .hero-square-two { z-index: 4; left: 9%; top: 27%; width: 20px; height: 20px; }
-.trust-strip { min-height:165px; display:flex; justify-content:space-between; align-items:center; gap:40px; padding:34px clamp(24px,7vw,110px); background:#0d0c10; }
-.trust-strip p { margin:0; color:#85818d; font-size:clamp(22px,2.6vw,40px); line-height:1.08; letter-spacing:-.04em; }
-.trust-strip strong { color:white; }
-.trust-strip div { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:10px; }
-.trust-strip span { padding:13px 18px; border:1px solid var(--line); border-radius:99px; color:#b9b4c1; font-size:11px; text-transform:uppercase; letter-spacing:.1em; }
-@media (max-width:900px) { .site-header{grid-template-columns:1fr auto;height:78px} nav,.header-cta{display:none}.menu-button{display:block}.hero{grid-template-columns:1fr}.hero-copy{padding:135px 24px 70px}.hero-visual{min-height:600px;border-left:0;border-top:1px solid var(--line)}.trust-strip{align-items:flex-start;flex-direction:column}.trust-strip div{justify-content:flex-start} }
+@media (max-width:900px) { .site-header{grid-template-columns:1fr auto;height:78px} nav,.header-cta{display:none}.menu-button{display:block}.hero{grid-template-columns:1fr}.hero-copy{padding:135px 24px 70px}.hero-visual{min-height:600px;border-left:0;border-top:1px solid var(--line)} }
 @media (max-width:520px) { h1{font-size:clamp(52px,17vw,72px)}.hero-actions .button{width:100%}.note-laser{right:16px;bottom:12%}.note-cryo{top:18%;right:16px}.status-pill{left:16px;top:24px} }
 
 /* Shared section system */
