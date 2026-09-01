@@ -1,23 +1,31 @@
 'use client';
 
 import Image from 'next/image';
-import type { FormEvent } from 'react';
-import { useMemo, useState } from 'react';
+import type { SyntheticEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import {
+  Award,
   ArrowDown,
-  ArrowLeft,
-  ArrowRight,
   ArrowUpRight,
   BadgePercent,
   CalendarDays,
   Check,
-  ChevronDown,
   Clock3,
   CreditCard,
   Crosshair,
+  HeartHandshake,
   Menu,
   MessageCircle,
   Play,
+  Plus,
   ShieldCheck,
   Snowflake,
   Sparkles,
@@ -41,6 +49,19 @@ const steps = [
   { number: '04', title: 'Восстановление', text: 'После процедуры даём понятные рекомендации и остаёмся на связи до следующего визита.' },
 ];
 
+const resultCases = [
+  { title: 'Тонкая графика', meta: 'чёрный пигмент · предплечье', sessions: '6 сеансов', position: '0%' },
+  { title: 'Мини-тату', meta: 'чёрный пигмент · предплечье', sessions: '5 сеансов', position: '0%' },
+  { title: 'Цветы под перекрытие', meta: 'цветной пигмент · плечо', sessions: '3 сеанса', position: '50%' },
+  { title: 'Плотный леттеринг', meta: 'чёрный пигмент · голень', sessions: '8 сеансов', position: '100%' },
+];
+
+const reviews = [
+  { name: 'Алина', goal: 'полный курс', quote: 'После каждого сеанса мастер был на связи. Видела понятный прогресс и спокойно дошла до чистой кожи.', image: '/expert-portrait.png' },
+  { name: 'Михаил', goal: 'осветление под перекрытие', quote: 'За три сеанса старый рисунок стал достаточно светлым, и тату-мастер смог сделать новое перекрытие.', image: '/studio-consultation.png' },
+  { name: 'Ксения', goal: 'удаление мини-тату', quote: 'Больше всего боялась боли, но охлаждение действительно помогает. Сама процедура прошла очень быстро.', image: '/studio-equipment.png' },
+];
+
 const faq = [
   ['Можно ли удалить тату до чистой кожи?', 'Да. Современная лазерная технология справляется даже со сложными случаями. Итог зависит от состава и глубины пигмента, фототипа кожи и соблюдения интервалов. Точное количество сеансов специалист назовёт после консультации.'],
   ['Сколько нужно сеансов?', 'В среднем для полного удаления требуется 5–10 сеансов, для осветления под перекрытие — 2–4. Калькулятор на странице даст предварительный диапазон.'],
@@ -59,6 +80,16 @@ export default function Home() {
   const [density, setDensity] = useState<'light' | 'dense'>('dense');
   const [videoOpen, setVideoOpen] = useState<number | null>(null);
   const [coupon, setCoupon] = useState(false);
+  const [resultApi, setResultApi] = useState<CarouselApi>();
+  const [resultSlide, setResultSlide] = useState(0);
+
+  useEffect(() => {
+    if (!resultApi) return;
+    const updateSlide = () => setResultSlide(resultApi.selectedScrollSnap());
+    updateSlide();
+    resultApi.on('select', updateSlide);
+    return () => { resultApi.off('select', updateSlide); };
+  }, [resultApi]);
 
   const sessions = useMemo(() => {
     let center = goal === 'remove' ? 6 : 3;
@@ -70,7 +101,7 @@ export default function Home() {
     return [Math.max(1, center - 1), center + 1];
   }, [goal, skinType, tattooAge, ink, density]);
 
-  function submitCoupon(event: FormEvent<HTMLFormElement>) {
+  function submitCoupon(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     setCoupon(true);
   }
@@ -102,8 +133,14 @@ export default function Home() {
         </div>
       )}
 
+      <a className="floating-booking" href="#booking" aria-label="Перейти к онлайн-записи">
+        <span>Запись<br />онлайн</span><ArrowUpRight />
+      </a>
+
       <section className="hero" id="top">
         <div className="hero-glow" />
+        <i className="decor-square hero-square-one" />
+        <i className="decor-square hero-square-two" />
         <div className="hero-copy">
           <h1>Чистая кожа.<br /><em>Ваше решение.</em></h1>
           <p className="hero-lead">Точная работа с пигментом — от деликатного осветления под перекрытие до полного удаления татуировки.</p>
@@ -114,10 +151,12 @@ export default function Home() {
         </div>
         <div className="hero-visual">
           <Image src="/studio-equipment.png" alt="Лазерная и криоустановка в студии" fill priority sizes="(max-width: 900px) 100vw, 54vw" />
+          <div className="hero-outline-word">REMOVAL</div>
           <div className="image-wash" />
           <div className="equipment-note note-laser"><span>01</span><b>Пикосекундный лазер</b><small>точно воздействует на пигмент</small></div>
           <div className="equipment-note note-cryo"><span>02</span><b>Криоустановка</b><small>комфорт во время процедуры</small></div>
           <div className="status-pill"><Sparkles size={16} /> Современное оборудование</div>
+          <div className="orbit-copy">ТОЧНО · БЕРЕЖНО · ДО РЕЗУЛЬТАТА ·</div>
         </div>
       </section>
 
@@ -167,18 +206,38 @@ export default function Home() {
       <section className="section results-section" id="results">
         <div className="section-heading split-heading">
           <div><h2>До — и <em>после</em></h2></div>
-          <div className="goal-switch" role="group" aria-label="Цель удаления">
+          <fieldset className="goal-switch"><legend className="sr-only">Цель удаления</legend>
             <button className={goal === 'remove' ? 'active' : ''} onClick={() => setGoal('remove')}>Полное удаление</button>
             <button className={goal === 'cover' ? 'active' : ''} onClick={() => setGoal('cover')}>Под перекрытие</button>
-          </div>
+          </fieldset>
         </div>
-        <div className="comparison-card">
-          <div className="comparison-image before-image"><span>До</span></div>
-          <div className={`comparison-image after-image ${goal === 'cover' ? 'cover-result' : ''}`}><span>{goal === 'remove' ? 'После курса' : 'Осветление'}</span></div>
-        </div>
+        <Carousel setApi={setResultApi} opts={{ loop: true }} className="results-carousel">
+          <CarouselContent>
+            {resultCases.map((item, index) => (
+              <CarouselItem key={item.title}>
+                <div
+                  className={`result-case-visual ${goal === 'cover' ? 'cover-case' : ''}`}
+                  style={{
+                    backgroundImage: `url('${index === 0 ? '/before-after.png' : '/results-gallery.png'}')`,
+                    backgroundSize: index === 0 ? '100% 100%' : '300% 100%',
+                    backgroundPosition: index === 0 ? 'center' : `${item.position} center`,
+                  }}
+                >
+                  <span className="case-label case-before">До</span>
+                  <span className="case-label case-after">{goal === 'remove' ? 'После курса' : 'Осветление'}</span>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="case-arrow case-prev" />
+          <CarouselNext className="case-arrow case-next" />
+        </Carousel>
         <div className="result-caption">
-          <p><strong>{goal === 'remove' ? 'Полное удаление' : 'Подготовка под новую работу'}</strong><span>{goal === 'remove' ? 'Кожа после завершённого курса процедур.' : 'Деликатно снижаем плотность старого пигмента за 2–4 сеанса, чтобы мастеру было проще создать новое тату.'}</span></p>
-          <div><span>Чёрный пигмент</span><span>Средняя плотность</span><span>{goal === 'remove' ? '7 сеансов' : '3 сеанса'}</span></div>
+          <p><strong>{resultCases[resultSlide]?.title}</strong><span>{goal === 'remove' ? 'Кожа после завершённого курса процедур.' : 'Деликатно снижаем плотность старого пигмента, чтобы мастеру было проще создать новое тату.'}</span></p>
+          <div><span>{resultCases[resultSlide]?.meta}</span><span>{goal === 'remove' ? resultCases[resultSlide]?.sessions : '2–4 сеанса'}</span></div>
+        </div>
+        <div className="result-dots" aria-label="Выбор результата">
+          {resultCases.map((item, index) => <button key={item.title} className={resultSlide === index ? 'active' : ''} onClick={() => resultApi?.scrollTo(index)} aria-label={`Показать результат: ${item.title}`} />)}
         </div>
         <p className="medical-note">Результат индивидуален и зависит от состава пигмента, глубины, возраста татуировки и особенностей кожи.</p>
       </section>
@@ -200,7 +259,11 @@ export default function Home() {
             <a className="button button-primary" href="#booking">Подобрать абонемент <ArrowUpRight size={17} /></a>
           </aside>
         </div>
-        <div className="payment-banner"><CreditCard /><div><strong>Можно в рассрочку</strong><span>Разделите оплату курса на комфортные платежи без переплаты. Условия уточняйте у администратора.</span></div><a href="#booking">Узнать условия <ArrowRight /></a></div>
+        <div className="split-pay">
+          <div className="split-pay-copy"><CreditCard /><span>Рассрочка на курс</span><h3>Делите оплату<br />на части</h3><p>Без переплат и скрытых комиссий. Подберём комфортный график вместе с абонементом.</p></div>
+          <div className="split-pay-offer"><strong>БЕЗ<br />ПЕРЕПЛАТ</strong><div><span>от</span><b>1 350 ₽</b><small>в месяц</small></div><a className="button button-primary" href="#booking">Рассчитать курс <ArrowUpRight /></a></div>
+          <i className="decor-square split-square" />
+        </div>
       </section>
 
       <section className="section calculator-section" id="calculator">
@@ -229,7 +292,10 @@ export default function Home() {
           <div><h2>Спокойно.<br /><em>По шагам.</em></h2></div>
           <p>От первой консультации до рекомендаций после сеанса — понятно, внимательно и с заботой о коже.</p>
         </div>
-        <div className="process-grid">{steps.map((step, i) => <article key={step.number}><span>{step.number}</span><div className="process-icon">{i === 0 ? <MessageCircle /> : i === 1 ? <Crosshair /> : i === 2 ? <Snowflake /> : <Sparkles />}</div><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
+        <div className="process-story">
+          <div className="process-visual"><Image src="/studio-consultation.png" alt="Консультация перед лазерным удалением татуировки" fill sizes="(max-width: 900px) 100vw, 44vw" /><span>Консультация перед первым сеансом</span></div>
+          <div className="process-timeline">{steps.map((step, i) => <article key={step.number}><span>{step.number}</span><div><div className="process-mini-icon">{i === 0 ? <MessageCircle /> : i === 1 ? <Crosshair /> : i === 2 ? <Snowflake /> : <Sparkles />}</div><h3>{step.title}</h3><p>{step.text}</p></div></article>)}</div>
+        </div>
       </section>
 
       <section className="section prep-section">
@@ -239,17 +305,31 @@ export default function Home() {
       </section>
 
       <section className="section studio-section">
-        <div className="studio-photo"><Image src="/studio-equipment.png" alt="Кабинет лазерного удаления, кушетка и зона ожидания" fill sizes="100vw" /><div className="studio-overlay"><h2>Здесь всё настроено<br />на ваш <em>комфорт</em></h2><div className="studio-tags"><span>Лазер</span><span>Криоустановка</span><span>Кушетка</span><span>Зона ожидания</span></div></div></div>
+        <div className="studio-story">
+          <div className="studio-copy"><h2>Давайте<br /><em>знакомиться</em></h2><p>NOIR — тёмное, спокойное пространство, где технология не заслоняет заботу. Показываем оборудование, объясняем план и остаёмся рядом между сеансами.</p><div className="studio-tags"><span>Лазер</span><span>Криоустановка</span><span>Кушетка</span><span>Зона ожидания</span></div><a className="button button-ghost" href="#booking">Познакомиться на консультации <ArrowUpRight /></a></div>
+          <div className="studio-collage"><div className="studio-main-photo"><Image src="/studio-consultation.png" alt="Консультация в студии NOIR" fill sizes="(max-width: 900px) 100vw, 52vw" /></div><div className="studio-detail-photo"><Image src="/studio-equipment.png" alt="Лазер, криоустановка и кушетка" fill sizes="28vw" /></div><i className="decor-square studio-square" /></div>
+        </div>
+      </section>
+
+      <section className="section expert-section">
+        <div className="expert-photo"><Image src="/expert-portrait.png" alt="Эксперт по лазерному удалению татуировок" fill sizes="(max-width: 900px) 100vw, 42vw" /><span>Временное фото — заменим на специалиста студии</span></div>
+        <div className="expert-copy"><h2>Ваш результат<br />ведёт <em>эксперт</em></h2><p className="expert-lead">Специалист оценивает татуировку, подбирает параметры лазера и корректирует протокол по реакции кожи — от первой консультации до финального результата.</p><div className="expert-points"><div><Award /><span><b>Профессиональная подготовка</b><small>Работа с разными фототипами и сложными пигментами</small></span></div><div><HeartHandshake /><span><b>Поддержка между сеансами</b><small>Можно написать и уточнить всё о восстановлении</small></span></div><div><ShieldCheck /><span><b>Без шаблонных настроек</b><small>Параметры подбираются индивидуально перед каждым сеансом</small></span></div></div><blockquote>«Наша задача — не просто воздействовать на пигмент, а провести кожу через весь курс спокойно и предсказуемо».</blockquote><a className="button button-primary" href="#booking">Получить консультацию <ArrowUpRight /></a></div>
       </section>
 
       <section className="section reviews-section">
-        <div className="section-heading split-heading"><div><h2>Говорят <em>клиенты</em></h2></div><div className="review-arrows"><button onClick={() => setVideoOpen(0)} aria-label="Посмотреть первый отзыв"><ArrowLeft /></button><button onClick={() => setVideoOpen(2)} aria-label="Посмотреть следующий отзыв"><ArrowRight /></button></div></div>
-        <div className="review-grid">{['Алина · полный курс','Михаил · под перекрытие','Ксения · удаление тату'].map((name,index) => <button className="video-card" key={name} onClick={() => setVideoOpen(index)}><Image src={index === 1 ? '/before-after.png' : '/studio-equipment.png'} alt="" fill sizes="33vw" /><span className="play-button"><Play fill="currentColor" /></span><div><b>{name}</b><small>Смотреть видео · 0:{32 + index * 9}</small></div></button>)}</div>
+        <div className="section-heading split-heading"><div><h2>Говорят <em>клиенты</em></h2></div><p>Реальные видео можно подставить вместо временных карточек без изменения дизайна блока.</p></div>
+        <Carousel opts={{ align: 'start', loop: true }} className="reviews-carousel">
+          <CarouselContent>
+            {reviews.map((review,index) => <CarouselItem className="review-slide" key={review.name}><button className="video-card" onClick={() => setVideoOpen(index)}><Image src={review.image} alt="" fill sizes="(max-width: 900px) 85vw, 42vw" /><span className="play-button"><Play fill="currentColor" /></span><div><p>«{review.quote}»</p><b>{review.name}</b><small>{review.goal} · смотреть видео</small></div></button></CarouselItem>)}
+          </CarouselContent>
+          <div className="review-controls"><CarouselPrevious /><CarouselNext /></div>
+        </Carousel>
       </section>
 
       <section className="section faq-section" id="faq">
         <div className="section-heading split-heading"><div><h2>Частые <em>вопросы</em></h2></div><p>Если не нашли ответ — напишите нам. Администратор или специалист поможет разобраться.</p></div>
-        <div className="faq-list">{faq.map(([question, answer], index) => <details key={question} open={index === 0}><summary><span>{String(index + 1).padStart(2,'0')}</span>{question}<ChevronDown /></summary><p>{answer}</p></details>)}</div>
+        <div className="faq-list">{faq.map(([question, answer]) => <details key={question}><summary>{question}<Plus /></summary><p>{answer}</p></details>)}</div>
+        <div className="faq-contact-strip"><div><MessageCircle /><span><b>Остался свой вопрос?</b><small>Напишите нам — ответит специалист, а не бот.</small></span></div><a className="button" href="#booking">Задать вопрос <ArrowUpRight /></a></div>
       </section>
 
       <section className="booking-section" id="booking">
@@ -259,8 +339,8 @@ export default function Home() {
 
       <footer><a className="brand" href="#top"><span className="brand-mark">N</span><span>NOIR<br /><small>tattoo studio</small></span></a><p>Лазерное удаление и осветление татуировок.</p><div><a href="#results">Результаты</a><a href="#price">Прайс</a><a href="#faq">FAQ</a><a href="#booking">Контакты</a></div><span>© 2026 NOIR</span></footer>
 
-      {videoOpen !== null && <div className="modal-backdrop" onClick={() => setVideoOpen(null)}><div className="video-modal" onClick={event => event.stopPropagation()}><button onClick={() => setVideoOpen(null)} aria-label="Закрыть"><X /></button><div className="video-placeholder"><Play fill="currentColor" /><p>Видеоотзыв клиента</p><span>Сюда можно добавить реальное видео студии</span></div></div></div>}
-      {coupon && <div className="modal-backdrop" onClick={() => setCoupon(false)}><div className="coupon-modal" onClick={event => event.stopPropagation()}><button onClick={() => setCoupon(false)} aria-label="Закрыть"><X /></button><BadgePercent /><p>Ваш купон</p><strong>FIRST20</strong><h3>Скидка 20% сохранена</h3><span>Покажите код администратору. Мы свяжемся с вами для подтверждения записи.</span><button className="button button-primary" onClick={() => setCoupon(false)}>Готово</button></div></div>}
+      {videoOpen !== null && <div className="modal-backdrop" role="presentation" onKeyDown={event => event.key === 'Escape' && setVideoOpen(null)} onClick={event => event.currentTarget === event.target && setVideoOpen(null)}><dialog open className="video-modal" aria-label="Видеоотзыв клиента"><button onClick={() => setVideoOpen(null)} aria-label="Закрыть"><X /></button><div className="video-placeholder"><Play fill="currentColor" /><p>Видеоотзыв клиента</p><span>Сюда можно добавить реальное видео студии</span></div></dialog></div>}
+      {coupon && <div className="modal-backdrop" role="presentation" onKeyDown={event => event.key === 'Escape' && setCoupon(false)} onClick={event => event.currentTarget === event.target && setCoupon(false)}><dialog open className="coupon-modal" aria-label="Купон на скидку"><button onClick={() => setCoupon(false)} aria-label="Закрыть"><X /></button><BadgePercent /><p>Ваш купон</p><strong>FIRST20</strong><h3>Скидка 20% сохранена</h3><span>Покажите код администратору. Мы свяжемся с вами для подтверждения записи.</span><button className="button button-primary" onClick={() => setCoupon(false)}>Готово</button></dialog></div>}
     </main>
   );
 }
