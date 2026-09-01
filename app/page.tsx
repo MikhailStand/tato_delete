@@ -2,10 +2,9 @@
 
 import Image from 'next/image';
 import type { SyntheticEvent } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Carousel,
-  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -43,17 +42,10 @@ const prices = [
 ];
 
 const steps = [
-  { number: '01', title: 'Консультация', text: 'Эксперт оценивает цвет, плотность и глубину пигмента, возраст татуировки и состояние кожи.' },
-  { number: '02', title: 'Точная настройка', text: 'Специалист подбирает индивидуальные параметры лазера под фототип кожи и задачу: удалить или осветлить.' },
-  { number: '03', title: 'Процедура', text: 'Сеанс занимает около 5–10 минут. Используем охлаждение и анестезирующий гель для вашего комфорта.' },
-  { number: '04', title: 'Восстановление', text: 'После процедуры даём понятные рекомендации и остаёмся на связи до следующего визита.' },
-];
-
-const resultCases = [
-  { title: 'Тонкая графика', meta: 'чёрный пигмент · предплечье', sessions: '6 сеансов', position: '0%' },
-  { title: 'Мини-тату', meta: 'чёрный пигмент · предплечье', sessions: '5 сеансов', position: '0%' },
-  { title: 'Цветы под перекрытие', meta: 'цветной пигмент · плечо', sessions: '3 сеанса', position: '50%' },
-  { title: 'Плотный леттеринг', meta: 'чёрный пигмент · голень', sessions: '8 сеансов', position: '100%' },
+  { title: 'Консультация', text: 'Эксперт оценивает цвет, плотность и глубину пигмента, возраст татуировки и состояние кожи.' },
+  { title: 'Точная настройка', text: 'Специалист подбирает индивидуальные параметры лазера под фототип кожи и задачу: удалить или осветлить.' },
+  { title: 'Процедура', text: 'Сеанс занимает около 5–10 минут. Используем охлаждение и анестезирующий гель для вашего комфорта.' },
+  { title: 'Восстановление', text: 'После процедуры даём понятные рекомендации и остаёмся на связи до следующего визита.' },
 ];
 
 const reviews = [
@@ -80,16 +72,6 @@ export default function Home() {
   const [density, setDensity] = useState<'light' | 'dense'>('dense');
   const [videoOpen, setVideoOpen] = useState<number | null>(null);
   const [coupon, setCoupon] = useState(false);
-  const [resultApi, setResultApi] = useState<CarouselApi>();
-  const [resultSlide, setResultSlide] = useState(0);
-
-  useEffect(() => {
-    if (!resultApi) return;
-    const updateSlide = () => setResultSlide(resultApi.selectedScrollSnap());
-    updateSlide();
-    resultApi.on('select', updateSlide);
-    return () => { resultApi.off('select', updateSlide); };
-  }, [resultApi]);
 
   const sessions = useMemo(() => {
     let center = goal === 'remove' ? 6 : 3;
@@ -153,8 +135,8 @@ export default function Home() {
           <Image src="/studio-equipment.png" alt="Лазерная и криоустановка в студии" fill priority sizes="(max-width: 900px) 100vw, 54vw" />
           <div className="hero-outline-word">REMOVAL</div>
           <div className="image-wash" />
-          <div className="equipment-note note-laser"><span>01</span><b>Пикосекундный лазер</b><small>точно воздействует на пигмент</small></div>
-          <div className="equipment-note note-cryo"><span>02</span><b>Криоустановка</b><small>комфорт во время процедуры</small></div>
+          <div className="equipment-note note-laser"><b>Пикосекундный лазер</b><small>точно воздействует на пигмент</small></div>
+          <div className="equipment-note note-cryo"><b>Криоустановка</b><small>комфорт во время процедуры</small></div>
           <div className="status-pill"><Sparkles size={16} /> Современное оборудование</div>
           <div className="orbit-copy">ТОЧНО · БЕРЕЖНО · ДО РЕЗУЛЬТАТА ·</div>
         </div>
@@ -211,33 +193,19 @@ export default function Home() {
             <button className={goal === 'cover' ? 'active' : ''} onClick={() => setGoal('cover')}>Под перекрытие</button>
           </fieldset>
         </div>
-        <Carousel setApi={setResultApi} opts={{ loop: true }} className="results-carousel">
-          <CarouselContent>
-            {resultCases.map((item, index) => (
-              <CarouselItem key={item.title}>
-                <div
-                  className={`result-case-visual ${goal === 'cover' ? 'cover-case' : ''}`}
-                  style={{
-                    backgroundImage: `url('${index === 0 ? '/before-after.png' : '/results-gallery.png'}')`,
-                    backgroundSize: index === 0 ? '100% 100%' : '300% 100%',
-                    backgroundPosition: index === 0 ? 'center' : `${item.position} center`,
-                  }}
-                >
-                  <span className="case-label case-before">До</span>
-                  <span className="case-label case-after">{goal === 'remove' ? 'После курса' : 'Осветление'}</span>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="case-arrow case-prev" />
-          <CarouselNext className="case-arrow case-next" />
-        </Carousel>
-        <div className="result-caption">
-          <p><strong>{resultCases[resultSlide]?.title}</strong><span>{goal === 'remove' ? 'Кожа после завершённого курса процедур.' : 'Деликатно снижаем плотность старого пигмента, чтобы мастеру было проще создать новое тату.'}</span></p>
-          <div><span>{resultCases[resultSlide]?.meta}</span><span>{goal === 'remove' ? resultCases[resultSlide]?.sessions : '2–4 сеанса'}</span></div>
+        <div className={`before-after-grid ${goal === 'cover' ? 'cover-case' : ''}`}>
+          <figure className="result-photo result-photo-before">
+            <Image src="/before-after.png" alt="Татуировка до начала курса удаления" fill sizes="(max-width: 700px) 100vw, 50vw" style={{ width: '200%', maxWidth: 'none', left: 0 }} />
+            <figcaption>До</figcaption>
+          </figure>
+          <figure className="result-photo result-photo-after">
+            <Image src="/before-after.png" alt={goal === 'remove' ? 'Кожа после курса удаления татуировки' : 'Татуировка после осветления под перекрытие'} fill sizes="(max-width: 700px) 100vw, 50vw" style={{ width: '200%', maxWidth: 'none', left: '-100%' }} />
+            <figcaption>{goal === 'remove' ? 'После курса' : 'После осветления'}</figcaption>
+          </figure>
         </div>
-        <div className="result-dots" aria-label="Выбор результата">
-          {resultCases.map((item, index) => <button key={item.title} className={resultSlide === index ? 'active' : ''} onClick={() => resultApi?.scrollTo(index)} aria-label={`Показать результат: ${item.title}`} />)}
+        <div className="result-caption">
+          <p><strong>{goal === 'remove' ? 'Полное удаление' : 'Осветление под перекрытие'}</strong><span>{goal === 'remove' ? 'Показываем две фотографии рядом — результат легко оценить без слайдера и скрытых переходов.' : 'Деликатно снижаем плотность старого пигмента, чтобы мастеру было проще создать новое тату.'}</span></p>
+          <div><span>одинаковый ракурс</span><span>{goal === 'remove' ? 'результат курса' : '2–4 сеанса'}</span></div>
         </div>
         <p className="medical-note">Результат индивидуален и зависит от состава пигмента, глубины, возраста татуировки и особенностей кожи.</p>
       </section>
@@ -249,7 +217,7 @@ export default function Home() {
         </div>
         <div className="price-layout">
           <div className="price-list">
-            {prices.map((item, index) => <div className="price-row" key={item.size}><span>{String(index + 1).padStart(2, '0')}</span><div><b>{item.size}</b><small>{item.hint}</small></div><strong>{item.price}</strong></div>)}
+            {prices.map(item => <div className="price-row" key={item.size}><div><b>{item.size}</b><small>{item.hint}</small></div><strong>{item.price}</strong></div>)}
           </div>
           <aside className="subscription-card">
             <h3>Курс выгоднее<br />одного сеанса</h3>
@@ -273,15 +241,15 @@ export default function Home() {
         </div>
         <div className="calculator-shell">
           <div className="calculator-controls">
-            <div className="calc-block"><div className="calc-label"><span>01</span><div><b>Ваш фототип кожи</b><small>Шкала Фицпатрика</small></div></div>
-              <div className="skin-types">{[1,2,3,4,5,6].map(type => <button key={type} onClick={() => setSkinType(type)} className={skinType === type ? 'active' : ''}><span className={`skin-photo photo-${type}`} /><b>{type}</b></button>)}</div>
+            <div className="calc-block"><div className="calc-label"><div><b>Ваш фототип кожи</b><small>Шкала Фицпатрика</small></div></div>
+              <div className="skin-types">{[1,2,3,4,5,6].map(type => <button key={type} onClick={() => setSkinType(type)} className={skinType === type ? 'active' : ''}><span className="skin-photo"><Image src="/fitzpatrick-types.png" alt={`Фототип кожи ${type}`} fill sizes="120px" style={{ width: '600%', maxWidth: 'none', left: `-${(type - 1) * 100}%` }} /></span><b>{type}</b></button>)}</div>
             </div>
-            <div className="calc-block"><div className="calc-label"><span>02</span><b>Возраст татуировки</b></div><div className="choice-row"><button className={tattooAge === 'new' ? 'active' : ''} onClick={() => setTattooAge('new')}>до 2 лет</button><button className={tattooAge === 'middle' ? 'active' : ''} onClick={() => setTattooAge('middle')}>2–7 лет</button><button className={tattooAge === 'old' ? 'active' : ''} onClick={() => setTattooAge('old')}>больше 7 лет</button></div></div>
+            <div className="calc-block"><div className="calc-label"><b>Возраст татуировки</b></div><div className="choice-row"><button className={tattooAge === 'new' ? 'active' : ''} onClick={() => setTattooAge('new')}>до 2 лет</button><button className={tattooAge === 'middle' ? 'active' : ''} onClick={() => setTattooAge('middle')}>2–7 лет</button><button className={tattooAge === 'old' ? 'active' : ''} onClick={() => setTattooAge('old')}>больше 7 лет</button></div></div>
             <div className="calc-halves">
-              <div className="calc-block"><div className="calc-label"><span>03</span><b>Цвет</b></div><div className="choice-row"><button className={ink === 'black' ? 'active' : ''} onClick={() => setInk('black')}>чёрный</button><button className={ink === 'color' ? 'active' : ''} onClick={() => setInk('color')}>цветной</button></div></div>
-              <div className="calc-block"><div className="calc-label"><span>04</span><b>Плотность</b></div><div className="choice-row"><button className={density === 'light' ? 'active' : ''} onClick={() => setDensity('light')}>лёгкая</button><button className={density === 'dense' ? 'active' : ''} onClick={() => setDensity('dense')}>плотная</button></div></div>
+              <div className="calc-block"><div className="calc-label"><b>Цвет</b></div><div className="choice-row"><button className={ink === 'black' ? 'active' : ''} onClick={() => setInk('black')}>чёрный</button><button className={ink === 'color' ? 'active' : ''} onClick={() => setInk('color')}>цветной</button></div></div>
+              <div className="calc-block"><div className="calc-label"><b>Плотность</b></div><div className="choice-row"><button className={density === 'light' ? 'active' : ''} onClick={() => setDensity('light')}>лёгкая</button><button className={density === 'dense' ? 'active' : ''} onClick={() => setDensity('dense')}>плотная</button></div></div>
             </div>
-            <div className="calc-block"><div className="calc-label"><span>05</span><b>Цель</b></div><div className="choice-row"><button className={goal === 'remove' ? 'active' : ''} onClick={() => setGoal('remove')}>удалить полностью</button><button className={goal === 'cover' ? 'active' : ''} onClick={() => setGoal('cover')}>осветлить под перекрытие</button></div></div>
+            <div className="calc-block"><div className="calc-label"><b>Цель</b></div><div className="choice-row"><button className={goal === 'remove' ? 'active' : ''} onClick={() => setGoal('remove')}>удалить полностью</button><button className={goal === 'cover' ? 'active' : ''} onClick={() => setGoal('cover')}>осветлить под перекрытие</button></div></div>
           </div>
           <aside className="calc-result"><p>Ваш ориентир</p><div className="session-number">{sessions[0]}–{sessions[1]}</div><h3>сеансов</h3><span>с интервалом 6–8 недель</span><div className="calc-divider" /><p>На консультации эксперт уточнит прогноз и составит индивидуальный план.</p><a className="button button-primary" href="#booking">Получить точный расчёт <ArrowUpRight size={17} /></a></aside>
         </div>
@@ -294,7 +262,7 @@ export default function Home() {
         </div>
         <div className="process-story">
           <div className="process-visual"><Image src="/studio-consultation.png" alt="Консультация перед лазерным удалением татуировки" fill sizes="(max-width: 900px) 100vw, 44vw" /><span>Консультация перед первым сеансом</span></div>
-          <div className="process-timeline">{steps.map((step, i) => <article key={step.number}><span>{step.number}</span><div><div className="process-mini-icon">{i === 0 ? <MessageCircle /> : i === 1 ? <Crosshair /> : i === 2 ? <Snowflake /> : <Sparkles />}</div><h3>{step.title}</h3><p>{step.text}</p></div></article>)}</div>
+          <div className="process-timeline">{steps.map((step, i) => <article key={step.title}><div className="process-mini-icon">{i === 0 ? <MessageCircle /> : i === 1 ? <Crosshair /> : i === 2 ? <Snowflake /> : <Sparkles />}</div><div><h3>{step.title}</h3><p>{step.text}</p></div></article>)}</div>
         </div>
       </section>
 
