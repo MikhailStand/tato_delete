@@ -105,17 +105,11 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="hero-glow" />
         <div className="hero-copy">
-          <p className="eyebrow"><span>01</span> Лазерное удаление тату</p>
           <h1>Чистая кожа.<br /><em>Ваше решение.</em></h1>
           <p className="hero-lead">Точная работа с пигментом — от деликатного осветления под перекрытие до полного удаления татуировки.</p>
           <div className="hero-actions">
             <a className="button button-primary" href="#booking">Получить скидку 20% <ArrowUpRight size={18} /></a>
             <a className="button button-ghost" href="#calculator">Рассчитать сеансы <ArrowDown size={18} /></a>
-          </div>
-          <div className="hero-facts">
-            <div><strong>5–10</strong><span>минут процедура</span></div>
-            <div><strong>0 ₽</strong><span>первая консультация</span></div>
-            <div><strong>4,9</strong><span>рейтинг клиентов</span></div>
           </div>
         </div>
         <div className="hero-visual">
@@ -133,20 +127,46 @@ export default function Home() {
       </section>
 
       <section className="section advantages">
-        <div className="section-heading narrow-heading">
-          <p className="eyebrow"><span>02</span> Почему наш лазер</p>
-          <h2>Технология, которая<br /><em>работает точно</em></h2>
+        <div className="advantages-title">
+          <h2>МЫ ПРО<span>...</span></h2>
+          <p>Технологию, которая бережно работает с кожей и уверенно — с пигментом.</p>
         </div>
-        <div className="advantage-grid">
-          <article><div className="icon-box"><Target /></div><span>01</span><h3>Эффективность</h3><p>Современный лазер дробит пигмент на мельчайшие частицы — для полного удаления до чистой кожи.</p></article>
-          <article><div className="icon-box"><ShieldCheck /></div><span>02</span><h3>Безопасность</h3><p>Точно воздействуем на пигмент, не повреждая окружающую кожу. Параметры подбираются индивидуально.</p></article>
-          <article><div className="icon-box"><Zap /></div><span>03</span><h3>Быстрое восстановление</h3><p>Сеанс занимает около 5–10 минут, а кожа восстанавливается быстро и без выраженного дискомфорта.</p></article>
+        <div className="advantages-mosaic">
+          <article className="advantage-feature">
+            <Image src="/studio-equipment.png" alt="Лазер и криоустановка NOIR" fill sizes="(max-width: 900px) 100vw, 34vw" />
+            <div className="advantage-feature-shade" />
+            <div className="advantage-card-content">
+              <div className="advantage-icon"><Sparkles /></div>
+              <h3>Лазер нового<br />поколения</h3>
+              <p>Современная система точно дробит пигмент, а криоустановка помогает сделать процедуру комфортнее.</p>
+            </div>
+          </article>
+          <article className="advantage-card">
+            <div className="advantage-icon"><Target /></div>
+            <h3>Эффективность</h3>
+            <p>Удаляем тату до чистой кожи — без остаточного рисунка. Результат зависит от пигмента и количества сеансов.</p>
+          </article>
+          <article className="advantage-card">
+            <div className="advantage-icon"><ShieldCheck /></div>
+            <h3>Безопасность</h3>
+            <p>Лазер воздействует точно на пигмент, не повреждая окружающую кожу. Настройки подбираем индивидуально.</p>
+          </article>
+          <article className="advantage-card advantage-card-accent">
+            <div className="advantage-icon"><Zap /></div>
+            <h3>Быстрое восстановление</h3>
+            <p>Сеанс занимает около 5–10 минут, а кожа восстанавливается быстро и без выраженного дискомфорта.</p>
+          </article>
+          <article className="advantage-card">
+            <div className="advantage-icon"><Crosshair /></div>
+            <h3>Точный протокол</h3>
+            <p>Учитываем фототип, цвет, плотность и глубину пигмента — один шаблон не применяем ко всем.</p>
+          </article>
         </div>
       </section>
 
       <section className="section results-section" id="results">
         <div className="section-heading split-heading">
-          <div><p className="eyebrow"><span>03</span> Результат</p><h2>До — и <em>после</em></h2></div>
+          <div><h2>До — и <em>после</em></h2></div>
           <div className="goal-switch" role="group" aria-label="Цель удаления">
             <button className={goal === 'remove' ? 'active' : ''} onClick={() => setGoal('remove')}>Полное удаление</button>
             <button className={goal === 'cover' ? 'active' : ''} onClick={() => setGoal('cover')}>Под перекрытие</button>
@@ -165,7 +185,7 @@ export default function Home() {
 
       <section className="section price-section" id="price">
         <div className="section-heading split-heading">
-          <div><p className="eyebrow"><span>04</span> Прайс</p><h2>Понятная <em>стоимость</em></h2></div>
+          <div><h2>Понятная <em>стоимость</em></h2></div>
           <p>Финальная цена фиксируется после бесплатной консультации. Без скрытых доплат.</p>
         </div>
         <div className="price-layout">
@@ -173,7 +193,6 @@ export default function Home() {
             {prices.map((item, index) => <div className="price-row" key={item.size}><span>{String(index + 1).padStart(2, '0')}</span><div><b>{item.size}</b><small>{item.hint}</small></div><strong>{item.price}</strong></div>)}
           </div>
           <aside className="subscription-card">
-            <p className="eyebrow">Абонемент</p>
             <h3>Курс выгоднее<br />одного сеанса</h3>
             <p>Зафиксируйте стоимость и двигайтесь к результату по плану.</p>
             <div className="subscription-options"><span><b>4</b> сеанса <strong>−7%</strong></span><span><b>6</b> сеансов <strong>−12%</strong></span><span><b>8</b> сеансов <strong>−18%</strong></span></div>
@@ -186,7 +205,7 @@ export default function Home() {
 
       <section className="section calculator-section" id="calculator">
         <div className="section-heading split-heading">
-          <div><p className="eyebrow"><span>05</span> Предварительный расчёт</p><h2>Сколько нужно <em>сеансов?</em></h2></div>
+          <div><h2>Сколько нужно <em>сеансов?</em></h2></div>
           <p>Ответьте на четыре вопроса. Расчёт ориентировочный — точный план составляет специалист после осмотра.</p>
         </div>
         <div className="calculator-shell">
@@ -207,34 +226,34 @@ export default function Home() {
 
       <section className="section process-section" id="process">
         <div className="section-heading split-heading">
-          <div><p className="eyebrow"><span>06</span> Как происходит процедура</p><h2>Спокойно.<br /><em>По шагам.</em></h2></div>
+          <div><h2>Спокойно.<br /><em>По шагам.</em></h2></div>
           <p>От первой консультации до рекомендаций после сеанса — понятно, внимательно и с заботой о коже.</p>
         </div>
         <div className="process-grid">{steps.map((step, i) => <article key={step.number}><span>{step.number}</span><div className="process-icon">{i === 0 ? <MessageCircle /> : i === 1 ? <Crosshair /> : i === 2 ? <Snowflake /> : <Sparkles />}</div><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
       </section>
 
       <section className="section prep-section">
-        <div className="section-heading"><p className="eyebrow"><span>07</span> Подготовка</p><h2>Перед процедурой</h2></div>
+        <div className="section-heading"><h2>Перед процедурой</h2></div>
         <div className="prep-grid"><article><span>За 14 дней</span><h3>Без загара</h3><p>Не загорайте и не посещайте солярий, используйте SPF на открытых участках.</p></article><article><span>За 3 дня</span><h3>Бережно к коже</h3><p>Не используйте кислоты, скрабы и раздражающие средства в зоне удаления.</p></article><article><span>В день сеанса</span><h3>Чистая кожа</h3><p>Не наносите кремы и масла. Наденьте одежду, которая легко открывает нужную зону.</p></article><article><span>Важно</span><h3>Расскажите нам</h3><p>Сообщите о лекарствах, хронических заболеваниях и реакции кожи на прошлые процедуры.</p></article></div>
         <p className="prep-contact">Есть сомнения по подготовке? <a href="#booking">Напишите нам до записи — подскажем.</a></p>
       </section>
 
       <section className="section studio-section">
-        <div className="studio-photo"><Image src="/studio-equipment.png" alt="Кабинет лазерного удаления, кушетка и зона ожидания" fill sizes="100vw" /><div className="studio-overlay"><p className="eyebrow">Пространство NOIR</p><h2>Здесь всё настроено<br />на ваш <em>комфорт</em></h2><div className="studio-tags"><span>Лазер</span><span>Криоустановка</span><span>Кушетка</span><span>Зона ожидания</span></div></div></div>
+        <div className="studio-photo"><Image src="/studio-equipment.png" alt="Кабинет лазерного удаления, кушетка и зона ожидания" fill sizes="100vw" /><div className="studio-overlay"><h2>Здесь всё настроено<br />на ваш <em>комфорт</em></h2><div className="studio-tags"><span>Лазер</span><span>Криоустановка</span><span>Кушетка</span><span>Зона ожидания</span></div></div></div>
       </section>
 
       <section className="section reviews-section">
-        <div className="section-heading split-heading"><div><p className="eyebrow"><span>08</span> Отзывы</p><h2>Говорят <em>клиенты</em></h2></div><div className="review-arrows"><button onClick={() => setVideoOpen(0)} aria-label="Посмотреть первый отзыв"><ArrowLeft /></button><button onClick={() => setVideoOpen(2)} aria-label="Посмотреть следующий отзыв"><ArrowRight /></button></div></div>
+        <div className="section-heading split-heading"><div><h2>Говорят <em>клиенты</em></h2></div><div className="review-arrows"><button onClick={() => setVideoOpen(0)} aria-label="Посмотреть первый отзыв"><ArrowLeft /></button><button onClick={() => setVideoOpen(2)} aria-label="Посмотреть следующий отзыв"><ArrowRight /></button></div></div>
         <div className="review-grid">{['Алина · полный курс','Михаил · под перекрытие','Ксения · удаление тату'].map((name,index) => <button className="video-card" key={name} onClick={() => setVideoOpen(index)}><Image src={index === 1 ? '/before-after.png' : '/studio-equipment.png'} alt="" fill sizes="33vw" /><span className="play-button"><Play fill="currentColor" /></span><div><b>{name}</b><small>Смотреть видео · 0:{32 + index * 9}</small></div></button>)}</div>
       </section>
 
       <section className="section faq-section" id="faq">
-        <div className="section-heading split-heading"><div><p className="eyebrow"><span>09</span> FAQ</p><h2>Частые <em>вопросы</em></h2></div><p>Если не нашли ответ — напишите нам. Администратор или специалист поможет разобраться.</p></div>
+        <div className="section-heading split-heading"><div><h2>Частые <em>вопросы</em></h2></div><p>Если не нашли ответ — напишите нам. Администратор или специалист поможет разобраться.</p></div>
         <div className="faq-list">{faq.map(([question, answer], index) => <details key={question} open={index === 0}><summary><span>{String(index + 1).padStart(2,'0')}</span>{question}<ChevronDown /></summary><p>{answer}</p></details>)}</div>
       </section>
 
       <section className="booking-section" id="booking">
-        <div className="booking-copy"><p className="eyebrow"><span>10</span> Первый шаг</p><h2>Начните с <em>чистого</em></h2><p>Оставьте контакты — пришлём купон на скидку 20% на первый сеанс и предложим удобное время для бесплатной консультации.</p><div className="booking-perks"><span><BadgePercent /> −20% на первый сеанс</span><span><CalendarDays /> Подберём время</span><span><Clock3 /> Ответим в течение 15 минут</span></div></div>
+        <div className="booking-copy"><h2>Начните с <em>чистого</em></h2><p>Оставьте контакты — пришлём купон на скидку 20% на первый сеанс и предложим удобное время для бесплатной консультации.</p><div className="booking-perks"><span><BadgePercent /> −20% на первый сеанс</span><span><CalendarDays /> Подберём время</span><span><Clock3 /> Ответим в течение 15 минут</span></div></div>
         <form onSubmit={submitCoupon}><label>Ваше имя<input required name="name" placeholder="Как к вам обращаться?" /></label><label>Телефон или Telegram<input required name="contact" placeholder="+7 999 000-00-00" /></label><label>Что хотите сделать?<select name="goal"><option>Удалить тату полностью</option><option>Осветлить под перекрытие</option><option>Нужна консультация</option></select></label><button className="button button-primary" type="submit">Получить купон <ArrowUpRight /></button><small>Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</small></form>
       </section>
 
